@@ -1,6 +1,8 @@
 import js from "@eslint/js";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 import prettier from "eslint-config-prettier";
 import checkFile from "eslint-plugin-check-file";
+import n from "eslint-plugin-n";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -20,10 +22,14 @@ export default defineConfig([
     ],
     plugins: {
       "check-file": checkFile,
+      n,
+      "@tanstack/query": pluginQuery,
     },
     rules: {
+      "@tanstack/query/exhaustive-deps": "error",
       "prefer-arrow-callback": ["error"],
       "prefer-template": ["error"],
+      "n/no-process-env": ["error"],
       semi: ["error"],
       quotes: ["error", "double"],
       "check-file/filename-naming-convention": [

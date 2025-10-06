@@ -1,75 +1,205 @@
-# React + TypeScript + Vite
+# 🎬 Movie App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive movie discovery application built with React, TypeScript, and Tailwind CSS. Search for movies, discover trending content, and enjoy infinite scrolling through The Movie Database (TMDB) API.
 
-Currently, two official plugins are available:
+![Movie App](public/hero-img.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- 🔍 **Smart Search**: Real-time movie search with debounced input
+- 📈 **Trending Movies**: Display of most searched movies from your database
+- ♾️ **Infinite Scroll**: Seamless pagination for browsing movies
+- 📱 **Responsive Design**: Beautiful UI that works on all devices
+- ⚡ **Fast Performance**: Optimized with React Query for efficient data fetching
+- 🎨 **Modern UI**: Clean, gradient-based design with smooth animations
+- 📊 **Analytics**: Track search patterns using Appwrite database
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## 🛠️ Tech Stack
 
-Note: This will impact Vite dev & build performances.
+- **Frontend**: React 19, TypeScript, Tailwind CSS
+- **State Management**: TanStack Query (React Query)
+- **Backend**: Appwrite (Database & Analytics)
+- **API**: The Movie Database (TMDB) API
+- **Build Tool**: Vite with Rolldown
+- **Code Quality**: ESLint, Prettier, Husky
+- **Package Manager**: Bun
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+- [Bun](https://bun.sh/) (recommended) or Node.js 18+
+- TMDB API key
+- Appwrite project setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd movie-app
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   bun install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env` file in the root directory:
+
+   ```env
+   VITE_TMDB_API_KEY=your_tmdb_api_key_here
+   VITE_APPWRITE_PROJECT_ID=your_appwrite_project_id
+   VITE_APPWRITE_PROJECT_NAME=your_appwrite_project_name
+   VITE_APPWRITE_ENDPOINT=your_appwrite_endpoint
+   VITE_APPWRITE_DATABASE_ID=your_appwrite_database_id
+   VITE_APPWRITE_TABLE_ID=your_appwrite_table_id
+   ```
+
+4. **Set up Appwrite Database**
+
+   Create a table in your Appwrite database with the following structure:
+   - `searchTerm` (String)
+   - `count` (Integer)
+   - `movie_id` (Integer)
+   - `poster_url` (String)
+
+5. **Start the development server**
+
+   ```bash
+   bun dev
+   ```
+
+6. **Open your browser**
+
+   Navigate to `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── movie-card.tsx   # Movie card component
+│   ├── search.tsx      # Search input component
+│   └── spinner.tsx      # Loading spinner
+├── constants/          # API constants
+│   └── tmdb.ts         # TMDB API configuration
+├── hooks/              # Custom React hooks
+│   ├── use-debounce.ts # Debounce hook for search
+│   └── use-infinite-scroll.ts # Infinite scroll hook
+├── lib/                # Utility libraries
+│   ├── appwrite.ts     # Appwrite database operations
+│   ├── tmdb.ts         # TMDB API functions
+│   └── utils.ts        # General utilities
+├── types.ts            # TypeScript type definitions
+├── env.ts              # Environment validation
+├── app.tsx             # Main application component
+└── main.tsx            # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔧 Available Scripts
 
-```js
-// eslint.config.js
-import reactDom from "eslint-plugin-react-dom";
-import reactX from "eslint-plugin-react-x";
+- `bun dev` - Start development server
+- `bun build` - Build for production
+- `bun preview` - Preview production build
+- `bun lint` - Run ESLint
+- `bun format` - Format code with Prettier
+- `bun check-types` - Run TypeScript type checking
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## 🎯 Key Features Explained
+
+### Smart Search
+
+- Debounced search input (500ms delay) to prevent excessive API calls
+- Searches both movie titles and content
+- Updates search analytics in real-time
+
+### Trending Movies
+
+- Displays top 5 most searched movies
+- Data persisted in Appwrite database
+- Updates automatically as users search
+
+### Infinite Scroll
+
+- Seamless pagination without page reloads
+- Loads more movies as user scrolls
+- Optimized performance with React Query caching
+
+### Responsive Design
+
+- Mobile-first approach
+- Beautiful gradient backgrounds
+- Smooth animations and transitions
+
+## 🔌 API Integration
+
+### TMDB API
+
+- Movie search and discovery
+- Poster images and metadata
+- Rate limiting handled automatically
+
+### Appwrite Database
+
+- Search analytics tracking
+- Trending movies calculation
+- Real-time data synchronization
+
+## 🎨 Styling
+
+The app uses Tailwind CSS with custom configurations:
+
+- Gradient text effects
+- Responsive grid layouts
+- Custom animations
+- Dark/light theme support
+
+## 🚀 Deployment
+
+### Build for Production
+
+```bash
+bun build
 ```
+
+### Deploy to Vercel/Netlify
+
+1. Connect your repository
+2. Set environment variables
+3. Deploy automatically
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [The Movie Database (TMDB)](https://www.themoviedb.org/) for the movie API
+- [Appwrite](https://appwrite.io/) for backend services
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [TanStack Query](https://tanstack.com/query) for data fetching
+
+## 📞 Support
+
+If you have any questions or need help, please:
+
+- Open an issue on GitHub
+- Check the documentation
+- Contact the maintainers
+
+---
+
+Made with ❤️ and React
